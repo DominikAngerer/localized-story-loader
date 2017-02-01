@@ -5,10 +5,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  plugin: 'neturalcustomers',
+  plugin: 'localized-story-loaderV2',
   mixins: [window.Storyblok.plugin],
   data: {
-    loadedStories: []
+    loadedStories: [],
+    type: 'single'
   },
   methods: {
     initWith: function initWith() {
@@ -25,12 +26,17 @@ exports.default = {
       if (this.$parent.$parent.$parent.$get('model') && this.$parent.$parent.$parent.$get('model').story) {
         var _locale = this.$parent.$parent.$parent.$get('model').story.full_slug.slice(0, 2);
       }
-      debugger;
       if (['de', 'en'].indexOf(_locale) < 0) {
         _locale = 'de';
       }
+      if (!this.schema.options) {
+        console.error('localized-story-loader: Define the following options: 0 : token, 1 : starts_with, 2: type (multi|single)');
+        return false;
+      }
+      this.$set('data.type', this.schema.options[2].value);
       jQuery.ajax({
-        url: 'https://api.storyblok.com/v1/cdn/stories/?token=NSxuZNYDF9wmB2ZGTnyqsQtt&starts_with=' + _locale + '/customers/&is_startpage=false&time=' + Date.now(),
+        url: 'https://api.storyblok.com/v1/cdn/stories/?token=INwFVCQIlV2S2bhX6ff28gtt&starts_with=news',
+        //url: 'https://api.storyblok.com/v1/cdn/stories/?token=' + this.schema.options[0].value + '&starts_with=' + _locale + '/' + this.schema.options[1].value + '/&is_startpage=false&time=' + Date.now(),
         success: function success(response) {
           _this.$set('data.loadedStories', response.stories);
         }
@@ -48,7 +54,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in data.loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row v-if=\"data.type == 'single'\"><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in data.loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div><div class=uk-form-row v-else=\"\"><label class=\"uk-margin-right uk-margin-bottom uk-display-inline-block\" v-for=\"loadedStory in data.loadedStories\"><input v-model=model type=checkbox class=uk-margin-small-right value=\"{{ loadedStory.uuid }}\"> {{ loadedStory.name }}</label></div>"
 
 },{}],2:[function(require,module,exports){
 'use strict';
