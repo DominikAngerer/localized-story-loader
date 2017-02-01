@@ -5,15 +5,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  plugin: 'neturalcustomers',
+  plugin: 'localized-story-loader',
   mixins: [window.Storyblok.plugin],
-  data: {
-    loadedStories: []
+  data: function data() {
+    return {
+      loadedStories: [],
+      type: 'single'
+    };
   },
   methods: {
     initWith: function initWith() {
       return {
-        value: ''
+        value: '',
+        values: [],
+        type: ''
       };
     }
   },
@@ -22,17 +27,21 @@ exports.default = {
       var _this = this;
 
       var _locale = 'de';
-      if (this.$parent.$parent.$parent.$get('model') && this.$parent.$parent.$parent.$get('model').story) {
-        var _locale = this.$parent.$parent.$parent.$get('model').story.full_slug.slice(0, 2);
+      if (this.$store && this.$store.model && this.$store.model.story) {
+        var _locale = this.$store.model.story.full_slug.slice(0, 2);
       }
-      debugger;
       if (['de', 'en'].indexOf(_locale) < 0) {
         _locale = 'de';
       }
+      if (!this.schema.options) {
+        console.error('localized-story-loader: Define the following options: 0 : token, 1 : starts_with, 2: type (single|multi)');
+        return false;
+      }
+      this.$set('type', this.schema.options ? this.schema.options[2].value : 'single');
       jQuery.ajax({
-        url: 'https://api.storyblok.com/v1/cdn/stories/?token=NSxuZNYDF9wmB2ZGTnyqsQtt&starts_with=' + _locale + '/customers/&is_startpage=false&time=' + Date.now(),
+        url: 'https://api.storyblok.com/v1/cdn/stories/?token=' + this.schema.options[0].value + '&starts_with=' + _locale + '/' + this.schema.options[1].value + '/&is_startpage=false&time=' + Date.now(),
         success: function success(response) {
-          _this.$set('data.loadedStories', response.stories);
+          _this.$set('loadedStories', response.stories);
         }
       });
     },
@@ -48,7 +57,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in data.loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row v-if=\"type == 'single'\"><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div><div class=uk-form-row v-else=\"\"><label class=\"uk-margin-right uk-margin-bottom uk-display-inline-block\" v-for=\"loadedStory in loadedStories\"><input v-model=model.values type=checkbox class=uk-margin-small-right value=\"{{ loadedStory.uuid }}\"> {{ loadedStory.name }}</label></div><input type=hidden v-model=model.type value=\"{{ type }}\">"
 
 },{}],2:[function(require,module,exports){
 'use strict';
