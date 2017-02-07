@@ -6,7 +6,7 @@
       </select>
   </div>
   <div class="uk-form-row" v-else>
-    <label class="uk-margin-right uk-margin-bottom uk-display-inline-block" v-for="loadedStory in loadedStories">
+    <label class="uk-margin-right uk-margin-bottom uk-display-block" v-for="loadedStory in loadedStories">
       <input v-model="model.values" type="checkbox" class="uk-margin-small-right" value="{{ loadedStory.uuid }}">
       {{ loadedStory.name }}
     </label>
