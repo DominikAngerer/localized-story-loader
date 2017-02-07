@@ -46,7 +46,7 @@
           console.error('localized-story-loader: Define the following options: 0 : token, 1 : starts_with, 2: type (single|multi)');
           return false;
         }
-        this.$set('type', this.schema.options ? this.schema.options[2].value : 'single');
+        this.$set('type', (this.schema.options && this.schema.options.length >= 2) ? this.schema.options[2].value : 'single');
         jQuery.ajax({
           url: 'https://api.storyblok.com/v1/cdn/stories/?token=' + this.schema.options[0].value + '&starts_with=' + _locale + '/' + this.schema.options[1].value + '/&is_startpage=false&time=' + Date.now() +'&sort_by=name:asc',
           success: (response) => {
