@@ -10,6 +10,7 @@
       <input v-model="model.values" type="checkbox" class="uk-margin-small-right" value="{{ loadedStory.uuid }}">
       {{ loadedStory.name }}
     </label>
+    <button class="uk-button uk-button-danger uk-button-mini" v-on:click="reset">Reset</button>
   </div>
   <input type="hidden" v-model="model.type" value="{{ type }}">
 </template>
@@ -31,6 +32,10 @@
           values: [],
           type: ''
         }
+      },
+      reset: function() {
+        this.model.value = '';
+        this.model.values = [];
       }
     },
     events: {

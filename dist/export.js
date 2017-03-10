@@ -20,6 +20,10 @@ exports.default = {
         values: [],
         type: ''
       };
+    },
+    reset: function reset() {
+      this.model.value = '';
+      this.model.values = [];
     }
   },
   events: {
@@ -57,7 +61,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row v-if=\"type == 'single'\"><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div><div class=uk-form-row v-else=\"\"><label class=\"uk-margin-right uk-margin-bottom uk-display-block\" v-for=\"loadedStory in loadedStories\"><input v-model=model.values type=checkbox class=uk-margin-small-right value=\"{{ loadedStory.uuid }}\"> {{ loadedStory.name }}</label></div><input type=hidden v-model=model.type value=\"{{ type }}\">"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=uk-form-row v-if=\"type == 'single'\"><select class=uk-width-1-1 v-model=model.value><option><option v-for=\"loadedStory in loadedStories\" v-bind:value=loadedStory.uuid>{{ loadedStory.name }}</select></div><div class=uk-form-row v-else=\"\"><label class=\"uk-margin-right uk-margin-bottom uk-display-block\" v-for=\"loadedStory in loadedStories\"><input v-model=model.values type=checkbox class=uk-margin-small-right value=\"{{ loadedStory.uuid }}\"> {{ loadedStory.name }}</label><button class=\"uk-button uk-button-danger uk-button-mini\" v-on:click=reset>Reset</button></div><input type=hidden v-model=model.type value=\"{{ type }}\">"
 
 },{}],2:[function(require,module,exports){
 'use strict';
