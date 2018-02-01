@@ -41,8 +41,8 @@
     events: {
       'plugin:created': function () {
         var _locale = 'de';
-        if (this.$store && this.$store.model && this.$store.model.story) {
-          var _locale = this.$store.model.story.full_slug.slice(0, 2);
+        if (this.$store && this.$store.model && this.$store.model) {
+          var _locale = this.$store.model.full_slug.slice(0, 2);
         }
         if (['de', 'en'].indexOf(_locale) < 0) {
           _locale = 'de';
