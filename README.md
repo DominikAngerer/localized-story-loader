@@ -1,3 +1,6 @@
+# Replaced by core feature: https://www.storyblok.com/cl/update-multiple-field-types
+
+
 <p align="center">
   <h1 align="center">localized-story-loader</h1>
   <p align="center">A <a href="https://www.storyblok.com" target="_blank">Storyblok</a> plugin to load stories as source of dropdown.</p>
